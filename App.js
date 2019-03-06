@@ -19,9 +19,9 @@ export default class App extends React.Component {
     });
   }
 
-  agregarTarea = (tarea) => {
+  agregarTarea = () => {
     this.setState({
-      tarea: [...this.state.tareas, tarea],
+      tareas: [...this.state.tareas, {texto: this.state.texto, key: Date.now()}],
       texto: '',
     });
   }
@@ -35,7 +35,7 @@ export default class App extends React.Component {
           texto={this.state.texto}
         />
         <Text>{this.state.texto}</Text>
-        <Body />
+        <Body tareas={this.state.tareas} />
       </View>
     );
   }
