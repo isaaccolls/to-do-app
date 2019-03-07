@@ -5,7 +5,6 @@ class Header extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Header</Text>
                 <TextInput
                     style={styles.texto}
                     placeholder="Coloca la tarea aqui..."
