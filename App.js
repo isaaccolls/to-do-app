@@ -9,8 +9,10 @@ export default class App extends React.Component {
     this.state = {
       tareas: [],
       texto: '',
+      cargando: true,
     };
   }
+
   componentDidMount() {
     this.recuperarEnTelefono();
   }
@@ -58,6 +60,11 @@ export default class App extends React.Component {
       .then((valor) => {
         console.log(valor);
         console.log(JSON.parse(valor));
+        setTimeout(() => {
+          this.setState({
+            cargando: false,
+          });
+        }, 3000);
         if (valor !== null) {
           const nuevasTareas = JSON.parse(valor);
           this.setState({
@@ -67,6 +74,9 @@ export default class App extends React.Component {
       })
       .catch((error) => {
         console.log(error);
+        this.setState({
+          cargando: false,
+        });
     });
   }
 
@@ -78,7 +88,7 @@ export default class App extends React.Component {
           agregar={this.agregarTarea}
           texto={this.state.texto}
         />
-        <Body tareas={this.state.tareas} eliminar={this.eliminarTarea} />
+        <Body tareas={this.state.tareas} eliminar={this.eliminarTarea} cargando={this.state.cargando} />
       </View>
     );
   }
