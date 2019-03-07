@@ -11,6 +11,9 @@ export default class App extends React.Component {
       texto: '',
     };
   }
+  componentDidMount() {
+    this.recuperarEnTelefono();
+  }
 
   establecerTexto = (value) => {
     console.log(value);
@@ -20,8 +23,10 @@ export default class App extends React.Component {
   }
 
   agregarTarea = () => {
+    const nuevasTareas = [...this.state.tareas, {texto: this.state.texto, key: Date.now()}];
+    this.guardarEnTelefono(nuevasTareas);
     this.setState({
-      tareas: [...this.state.tareas, {texto: this.state.texto, key: Date.now()}],
+      tareas: nuevasTareas,
       texto: '',
     });
   }
@@ -30,14 +35,15 @@ export default class App extends React.Component {
     const nuevasTareas = this.state.tareas.filter((tarea) => {
       return tarea.key !== id
     });
+    this.guardarEnTelefono(nuevasTareas);
     this.setState({
       tareas: nuevasTareas,
     });
   }
 
-  guardarEnTelefono = () => {
+  guardarEnTelefono = (tareas) => {
     // AsyncStorage.setItem('@AppCursoUdemy:nombre', 'Isaac') // always must be a string!!
-    AsyncStorage.setItem('@AppCursoUdemy:arrayUno', JSON.stringify([{key: 1, texto: 'uno'}, {key:2, texto: 'dos'}]))
+    AsyncStorage.setItem('@AppCursoUdemy:tareas', JSON.stringify(tareas))
       .then((valor) => {
         console.log(valor);
       })
@@ -48,10 +54,16 @@ export default class App extends React.Component {
 
   recuperarEnTelefono = () => {
     // AsyncStorage.getItem('@AppCursoUdemy:nombre')
-    AsyncStorage.getItem('@AppCursoUdemy:arrayUno')
+    AsyncStorage.getItem('@AppCursoUdemy:tareas')
       .then((valor) => {
         console.log(valor);
         console.log(JSON.parse(valor));
+        if (valor !== null) {
+          const nuevasTareas = JSON.parse(valor);
+          this.setState({
+            tareas: nuevasTareas,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -65,14 +77,6 @@ export default class App extends React.Component {
           cambiarTexto={this.establecerTexto}
           agregar={this.agregarTarea}
           texto={this.state.texto}
-        />
-        <Button
-          title='guardar'
-          onPress={() => {this.guardarEnTelefono()}}
-        />
-        <Button
-          title='recuperar'
-          onPress={() => {this.recuperarEnTelefono()}}
         />
         <Body tareas={this.state.tareas} eliminar={this.eliminarTarea} />
       </View>
