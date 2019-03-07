@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage, Button } from 'react-native';
-import Header from './Header';
-import Body from './Body';
+import Header from './components/Header';
+import Body from './components/Body';
 
 export default class App extends React.Component {
   constructor() {
@@ -25,7 +25,7 @@ export default class App extends React.Component {
   }
 
   agregarTarea = () => {
-    const nuevasTareas = [...this.state.tareas, {texto: this.state.texto, key: Date.now()}];
+    const nuevasTareas = [...this.state.tareas, {texto: this.state.texto, key: Date.now().toString()}];
     this.guardarEnTelefono(nuevasTareas);
     this.setState({
       tareas: nuevasTareas,
@@ -64,7 +64,7 @@ export default class App extends React.Component {
           this.setState({
             cargando: false,
           });
-        }, 3000);
+        }, 2000);
         if (valor !== null) {
           const nuevasTareas = JSON.parse(valor);
           this.setState({

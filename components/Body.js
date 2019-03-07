@@ -28,7 +28,7 @@ class Body extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 9,
-    backgroundColor: '#98fb98',
+    backgroundColor: '#ffe7d3',
   },
 });
 
